@@ -1,8 +1,9 @@
 =================
 TWOJA POSTAC: 
-Imie: kacper
+Imie: Bartlomiej
 Klasa: Warrior
-HP: 100
-Mana: 30
-Strenght: 70
+Rasa: Elf
+HP: 120
+Mana: 40
+Strenght: 85
 =================
