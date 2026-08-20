@@ -1,0 +1,8 @@
+=================
+TWOJA POSTAC: 
+Imie: kacper
+Klasa: Warrior
+HP: 100
+Mana: 30
+Strenght: 70
+=================
