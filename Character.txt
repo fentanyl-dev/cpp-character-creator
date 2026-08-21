@@ -1,9 +1,9 @@
 =================
 TWOJA POSTAC: 
-Imie: Bartlomiej
-Klasa: Warrior
-Rasa: Elf
-HP: 120
-Mana: 40
-Strenght: 85
+Imie: Hector
+Klasa: Mag
+Rasa: Dwarf
+HP: 110
+Mana: 160
+Strenght: 45
 =================

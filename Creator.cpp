@@ -118,7 +118,7 @@ void saveCharacter (Player& characterInfo, int choiceOfClass, int choiceOfRace)
         file << "Rasa: " << characterInfo.characterRace[choiceOfRace - 1] << endl;
         file << "HP: " << characterInfo.attributes.hp << endl;
         file << "Mana: " << characterInfo.attributes.mana << endl;
-        file << "Strenght: " << characterInfo.attributes.strength << endl;
+        file << "Strength: " << characterInfo.attributes.strength << endl;
         file << "=================";
 
         file.close();
@@ -129,6 +129,19 @@ void saveCharacter (Player& characterInfo, int choiceOfClass, int choiceOfRace)
     {
         cout << "Plik nie zostal zapisany ;/" << endl;
     }
+}
+
+void displayCharacter(Player& characterInfo, int choiceOfClass, int choiceOfRace)
+{
+    cout << "=================" << endl;
+    cout << "TWOJA POSTAC: " << endl;
+    cout << "IMIE: " << characterInfo.characterName << endl;
+    cout << "KLASA: " << characterInfo.characterClass[choiceOfClass - 1] << endl;
+    cout << "RASA: " << characterInfo.characterRace[choiceOfRace - 1] << endl;
+    cout << "HP: " << characterInfo.attributes.hp << endl;
+    cout << "MANA: " << characterInfo.attributes.mana << endl;
+    cout << "STRENGTH: " << characterInfo.attributes.strength << endl;
+    cout << "=================" << endl;
 }
 
 int main() {
@@ -165,6 +178,10 @@ int main() {
     int choiceOfRace = chooseRace();
     
     setRaceAttributes(characterInfo, choiceOfRace);
+
+    //DISPLAY CHARACTER
+
+    displayCharacter(characterInfo, choiceOfClass, choiceOfRace);
 
     //FILE
     
