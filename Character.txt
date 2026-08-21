@@ -1,9 +1,9 @@
 =================
 TWOJA POSTAC: 
-Imie: Luca
-Klasa: Archer
-Rasa: Human
-HP: 60
-Mana: 130
-Strength: 65
+Imie: ShowTime
+Klasa: Mag
+Rasa: Dwarf
+HP: 110
+Mana: 160
+Strength: 45
 =================

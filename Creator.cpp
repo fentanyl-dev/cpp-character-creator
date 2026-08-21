@@ -17,6 +17,9 @@ class Player
             "Dwarf"
         };
 
+        int selectedClass;
+        int selectedRace;
+
         class CharacterAttributes {
             public:
                 int hp;
@@ -189,7 +192,7 @@ void createCharacter()
     saveCharacter(characterInfo, choiceOfClass, choiceOfRace);
 }
 
-void loadCharacter()
+void loadCharacter(Player& characterInfo)
 {
     ifstream file("Character.txt");
     
@@ -198,7 +201,54 @@ void loadCharacter()
         string line;
         while (getline (file, line))
         {
-            cout << line << endl;
+            if (line.find("Imie:") != string::npos)
+            {
+                characterInfo.characterName = line.substr(6);
+            }
+            if (line.find("HP:") != string::npos)
+            {
+                string hpText = line.substr(4);
+                characterInfo.attributes.hp = stoi(hpText); 
+            }
+            if (line.find("Mana: ") != string::npos)
+            {
+                string manaText = line.substr(6);
+                characterInfo.attributes.mana = stoi(manaText);
+            }
+            if (line.find("Strength:") != string::npos)
+            {
+                string strengthText = line.substr(9);
+                characterInfo.attributes.strength = stoi(strengthText);
+            }
+            if (line.find("Klasa: ") != string::npos)
+            {
+                string classText = line.substr(7);
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (classText == characterInfo.characterClass[i])
+                    {
+                        characterInfo.selectedClass = i + 1;
+                    }
+                
+                }
+            }
+            
+            if (line.find("Rasa: ") != string::npos)
+            {
+                string raceText = line.substr(6);
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (raceText == characterInfo.characterRace[i])
+                    {
+                        characterInfo.selectedRace = i + 1;
+                    }
+                    
+                }
+                
+            }
+            
         }
 
         file.close();
@@ -244,9 +294,13 @@ int main() {
             break;
         
         case 2:
-            loadCharacter();
+        {
+            Player loadedCharacter;
+            loadCharacter(loadedCharacter);
+            displayCharacter(loadedCharacter, loadedCharacter.selectedClass, loadedCharacter.selectedRace);
             break;
-
+        }
+            
         case 3:
             cout << "Dowidzenia!";
             break;
