@@ -1,9 +1,9 @@
 =================
 TWOJA POSTAC: 
-Imie: Hector
-Klasa: Mag
-Rasa: Dwarf
-HP: 110
-Mana: 160
-Strenght: 45
+Imie: Luca
+Klasa: Archer
+Rasa: Human
+HP: 60
+Mana: 130
+Strength: 65
 =================

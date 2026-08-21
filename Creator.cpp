@@ -144,7 +144,8 @@ void displayCharacter(Player& characterInfo, int choiceOfClass, int choiceOfRace
     cout << "=================" << endl;
 }
 
-int main() {
+void createCharacter()
+{
     cout << "Witaj w Kreatorze postaci" << endl;
     cout << "Prosze o wybranie imienia postaci: ";
 
@@ -166,7 +167,7 @@ int main() {
     
     cout << "Wybrana Klasa: " << characterInfo.characterClass[choiceOfClass - 1] << endl;
 
-    //RACE
+     //RACE
 
     cout << "Teraz wybierz rase swojej postaci: " << endl;
 
@@ -186,6 +187,75 @@ int main() {
     //FILE
     
     saveCharacter(characterInfo, choiceOfClass, choiceOfRace);
+}
+
+void loadCharacter()
+{
+    ifstream file("Character.txt");
+    
+    if (file.is_open())
+    {
+        string line;
+        while (getline (file, line))
+        {
+            cout << line << endl;
+        }
+
+        file.close();
+    }
+    else 
+    {
+        cout << "Nie udalo sie otworzyc pliku!";
+    }
+
+}
+
+int mainMenu()
+{
+    int menuChoice;
+
+    cout << " ==================== " << endl;
+    cout << "  CHARACTER CREATOR " << endl;
+    cout << " ==================== "<< endl;
+    cout << "1. Create Character" << endl;
+    cout << "2. Load Character" << endl;
+    cout << "3. Exit" << endl;
+    cout << "Choose: ";
+
+    cin >> menuChoice;
+
+    return menuChoice;
+
+}
+
+
+int main() {
+    
+    int menuChoice = 0;
+
+    while (menuChoice != 3)
+    {
+        menuChoice = mainMenu();
+    
+        switch (menuChoice)
+        {
+        case 1:
+            createCharacter();
+            break;
+        
+        case 2:
+            loadCharacter();
+            break;
+
+        case 3:
+            cout << "Dowidzenia!";
+            break;
+    
+        default:
+            cout << "Musisz cos wybrac!";
+            break;
+        }
+    }
     
     return 0;
 }
