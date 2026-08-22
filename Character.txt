@@ -1,9 +1,13 @@
 =================
 TWOJA POSTAC: 
-Imie: ShowTime
+Imie: Michal
 Klasa: Mag
 Rasa: Dwarf
 HP: 110
 Mana: 160
 Strength: 45
+Inventory
+Potion of Strength
+Potion of Healing
+Sword
 =================

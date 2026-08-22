@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 using namespace std;
 
 class Player
@@ -28,6 +29,8 @@ class Player
         };
 
         CharacterAttributes attributes;
+
+        vector<string> inventory = {"Potion of Strength", "Potion of Healing", "Sword"};
 
 };
 
@@ -122,7 +125,16 @@ void saveCharacter (Player& characterInfo, int choiceOfClass, int choiceOfRace)
         file << "HP: " << characterInfo.attributes.hp << endl;
         file << "Mana: " << characterInfo.attributes.mana << endl;
         file << "Strength: " << characterInfo.attributes.strength << endl;
+    
+        file << "Inventory" << endl;
+        
+        for (int i = 0; i < characterInfo.inventory.size(); i++)
+        {
+            file << characterInfo.inventory[i] << endl;
+        }
+
         file << "=================";
+        
 
         file.close();
 
@@ -145,6 +157,24 @@ void displayCharacter(Player& characterInfo, int choiceOfClass, int choiceOfRace
     cout << "MANA: " << characterInfo.attributes.mana << endl;
     cout << "STRENGTH: " << characterInfo.attributes.strength << endl;
     cout << "=================" << endl;
+}
+
+void displayInventory(Player& characterInfo)
+{
+    cout << "=================" << endl;
+    for (int i = 0; i < characterInfo.inventory.size(); i++)
+    {
+        cout << i + 1 << ". " << characterInfo.inventory[i] << endl;
+    }
+    cout << "=================" << endl;
+}
+
+void addItem(Player& characterInfo)
+{
+    string itemName;
+    cout << "Podaj nazwe przedmiotu ktory chcesz dodac: " << endl;
+    cin >> itemName;
+    characterInfo.inventory.push_back(itemName);
 }
 
 void createCharacter()
@@ -195,6 +225,8 @@ void createCharacter()
 void loadCharacter(Player& characterInfo)
 {
     ifstream file("Character.txt");
+
+    bool readingInventory = false;
     
     if (file.is_open())
     {
@@ -248,8 +280,25 @@ void loadCharacter(Player& characterInfo)
                 }
                 
             }
+
+            if (line == "Inventory")
+            {
+                characterInfo.inventory.clear();
+                readingInventory = true;
+            }
+            
+            else if (line == "=================")
+            {
+                readingInventory = false;
+            }
+            
+            else if (readingInventory)
+            {
+                characterInfo.inventory.push_back(line);
+            }
             
         }
+
 
         file.close();
     }
@@ -298,6 +347,9 @@ int main() {
             Player loadedCharacter;
             loadCharacter(loadedCharacter);
             displayCharacter(loadedCharacter, loadedCharacter.selectedClass, loadedCharacter.selectedRace);
+            displayInventory(loadedCharacter);
+            addItem(loadedCharacter);
+            displayInventory(loadedCharacter);
             break;
         }
             
