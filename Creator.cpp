@@ -169,6 +169,7 @@ void displayInventory(Player& characterInfo)
     cout << "=================" << endl;
 }
 
+
 void addItem(Player& characterInfo)
 {
     string itemName;
@@ -195,6 +196,7 @@ void createCharacter()
     }
 
     int choiceOfClass = chooseClass();
+    characterInfo.selectedClass = choiceOfClass;
 
     setClassAttributes(characterInfo, choiceOfClass);
     
@@ -210,6 +212,7 @@ void createCharacter()
     }
 
     int choiceOfRace = chooseRace();
+    characterInfo.selectedRace = choiceOfRace;
     
     setRaceAttributes(characterInfo, choiceOfRace);
 
@@ -327,6 +330,70 @@ int mainMenu()
 
 }
 
+int inventoryMenu()
+{
+    int inventoryChoice;
+
+    cout << " ==================== " << endl;
+    cout << "      INVENTORY " << endl;
+    cout << " ==================== " << endl;
+    cout << "1. Add Item" << endl;
+    cout << "2. Remove Item" << endl;
+    cout << "3. Back" << endl;
+    cout << "Choose: ";
+
+    cin >> inventoryChoice;
+
+    return inventoryChoice;
+}
+
+void removeItem(Player& characterInfo)
+{
+    displayInventory(characterInfo);
+
+    int itemChoice;
+    cout << "Wybierz przedmiot ktory chcesz usunac: " << endl;
+    cin >> itemChoice;
+
+    characterInfo.inventory.erase(characterInfo.inventory.begin() + itemChoice - 1);
+}
+
+void inventory(Player& characterInfo) 
+{
+    int inventoryChoice = 0;
+
+    while (inventoryChoice != 3)
+    {
+        inventoryChoice = inventoryMenu();
+
+        switch (inventoryChoice)
+        {
+        case 1:
+            addItem(characterInfo);
+            saveCharacter(
+                characterInfo, 
+                characterInfo.selectedClass, 
+                characterInfo.selectedRace
+            );
+            break;
+        
+        case 2:
+            removeItem(characterInfo);
+            saveCharacter(characterInfo, 
+                characterInfo.selectedClass, 
+                characterInfo.selectedRace);
+            break;
+
+        case 3:
+            break;
+
+        default:
+            cout << "Nieprawidlowy wybor!" << endl; 
+            break;
+        }
+    }
+    
+}
 
 int main() {
     
@@ -346,10 +413,12 @@ int main() {
         {
             Player loadedCharacter;
             loadCharacter(loadedCharacter);
-            displayCharacter(loadedCharacter, loadedCharacter.selectedClass, loadedCharacter.selectedRace);
+            displayCharacter(loadedCharacter, 
+                loadedCharacter.selectedClass, 
+                loadedCharacter.selectedRace);
             displayInventory(loadedCharacter);
-            addItem(loadedCharacter);
-            displayInventory(loadedCharacter);
+            inventory(loadedCharacter);
+
             break;
         }
             
