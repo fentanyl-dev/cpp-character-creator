@@ -1,6 +1,6 @@
 =================
 TWOJA POSTAC: 
-Imie: Michal
+Imie: Test
 Klasa: Mag
 Rasa: Dwarf
 HP: 110
@@ -10,4 +10,5 @@ Inventory
 Potion of Strength
 Potion of Healing
 Sword
+Shield
 =================
