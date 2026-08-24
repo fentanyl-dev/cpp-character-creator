@@ -1,14 +1,13 @@
 =================
-TWOJA POSTAC: 
-Imie: Test
-Klasa: Mag
-Rasa: Dwarf
-HP: 110
-Mana: 160
-Strength: 45
+YOUR CHARACTER: 
+Name: ShowTime
+Class: Archer
+Race: Dwarf
+HP: 80
+Mana: 110
+Strength: 25
 Inventory
-Potion of Strength
 Potion of Healing
 Sword
-Shield
+Big Torch
 =================

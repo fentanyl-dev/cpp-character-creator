@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <limits>
 using namespace std;
 
 class Player
@@ -9,7 +10,7 @@ class Player
         string characterName;
         string characterClass[3] = {
             "Archer",
-            "Mag",
+            "Mage",
             "Warrior"
         };
         string characterRace[3] = {
@@ -18,8 +19,8 @@ class Player
             "Dwarf"
         };
 
-        int selectedClass;
-        int selectedRace;
+        int selectedClass = 0;
+        int selectedRace = 0;
 
         class CharacterAttributes {
             public:
@@ -84,12 +85,12 @@ void setRaceAttributes (Player& characterInfo, int choiceOfRace)
 int chooseClass()
 {
     int choiceOfClass;
-    cout << "Wpisz numer odpowiadajacej klasy: ";
+    cout << "Choose a class: ";
     cin >> choiceOfClass;
 
     while (choiceOfClass < 1 || choiceOfClass > 3)
     {
-        cout << "Nieprawidlowy wybor! Wybierz klase od 1 do 3: ";
+        cout << "Invalid choice! Choose a number from 1 to 3: ";
         cin >> choiceOfClass;
     }
 
@@ -99,12 +100,12 @@ int chooseClass()
 int chooseRace()
 {
     int choiceOfRace;
-    cout << "Wpisz numer odpowiedniej rasy: ";
+    cout << "Choose a race: ";
     cin >> choiceOfRace;
 
     while (choiceOfRace < 1 || choiceOfRace > 3) 
     {
-        cout << "Nieprawidlowy wybor rasy! Wybierz rase od 1 do 3!: " << endl;
+        cout << "Invalid choice! Choose a number from 1 to 3: " << endl;
         cin >> choiceOfRace;
 
     }
@@ -118,10 +119,10 @@ void saveCharacter (Player& characterInfo, int choiceOfClass, int choiceOfRace)
     if (file.is_open())
     {
         file << "=================" << endl;
-        file << "TWOJA POSTAC: " << endl;
-        file << "Imie: " << characterInfo.characterName << endl;
-        file << "Klasa: " << characterInfo.characterClass[choiceOfClass - 1] << endl;
-        file << "Rasa: " << characterInfo.characterRace[choiceOfRace - 1] << endl;
+        file << "YOUR CHARACTER: " << endl;
+        file << "Name: " << characterInfo.characterName << endl;
+        file << "Class: " << characterInfo.characterClass[choiceOfClass - 1] << endl;
+        file << "Race: " << characterInfo.characterRace[choiceOfRace - 1] << endl;
         file << "HP: " << characterInfo.attributes.hp << endl;
         file << "Mana: " << characterInfo.attributes.mana << endl;
         file << "Strength: " << characterInfo.attributes.strength << endl;
@@ -138,21 +139,29 @@ void saveCharacter (Player& characterInfo, int choiceOfClass, int choiceOfRace)
 
         file.close();
 
-        cout << "Plik zostal zapisany poprawnie!" << endl;
+        cout << "File was saved correctly!" << endl;
     }
     else 
     {
-        cout << "Plik nie zostal zapisany ;/" << endl;
+        cout << "File wasn't saved!" << endl;
     }
 }
 
 void displayCharacter(Player& characterInfo, int choiceOfClass, int choiceOfRace)
 {
     cout << "=================" << endl;
-    cout << "TWOJA POSTAC: " << endl;
-    cout << "IMIE: " << characterInfo.characterName << endl;
-    cout << "KLASA: " << characterInfo.characterClass[choiceOfClass - 1] << endl;
-    cout << "RASA: " << characterInfo.characterRace[choiceOfRace - 1] << endl;
+    cout << "YOUR CHARACTER: " << endl;
+    cout << "NAME: " << characterInfo.characterName << endl;
+
+    string className = (choiceOfClass > 0 && choiceOfClass <= 3) 
+                        ? characterInfo.characterClass[choiceOfClass - 1] 
+                        : "Unknown";
+    string raceName = (choiceOfRace > 0 && choiceOfRace <= 3) 
+                      ? characterInfo.characterRace[choiceOfRace - 1] 
+                      : "Unknown";
+
+    cout << "CLASS: " << className << endl;
+    cout << "RACE: " << raceName << endl;
     cout << "HP: " << characterInfo.attributes.hp << endl;
     cout << "MANA: " << characterInfo.attributes.mana << endl;
     cout << "STRENGTH: " << characterInfo.attributes.strength << endl;
@@ -173,22 +182,25 @@ void displayInventory(Player& characterInfo)
 void addItem(Player& characterInfo)
 {
     string itemName;
-    cout << "Podaj nazwe przedmiotu ktory chcesz dodac: " << endl;
-    cin >> itemName;
+    cout << "Enter the name of the item you want to add: " << endl;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, itemName);
+
     characterInfo.inventory.push_back(itemName);
 }
 
 void createCharacter()
 {
-    cout << "Witaj w Kreatorze postaci" << endl;
-    cout << "Prosze o wybranie imienia postaci: ";
+    cout << "Welcome to the character creator!" << endl;
+    cout << "Please choose a name for your character: ";
 
     Player characterInfo;
 
     cin >> characterInfo.characterName;
-    cout << "Wybrane imie postaci: " << characterInfo.characterName << endl;
+    cout << "Your character name: " << characterInfo.characterName << endl;
 
-    cout << "Nastepnie przedstawie ci kilka klas postaci do wyboru! Prosze wybrac klase ktora cie interesuje" << endl;
+    cout << "Choose one of the following classes: " << endl;
 
     for (int i = 0; i < 3; i++)
     {
@@ -200,11 +212,11 @@ void createCharacter()
 
     setClassAttributes(characterInfo, choiceOfClass);
     
-    cout << "Wybrana Klasa: " << characterInfo.characterClass[choiceOfClass - 1] << endl;
+    cout << "Your class: " << characterInfo.characterClass[choiceOfClass - 1] << endl;
 
      //RACE
 
-    cout << "Teraz wybierz rase swojej postaci: " << endl;
+    cout << "Now choose your character's race " << endl;
 
     for (int i = 0; i < 3; i++)
     {
@@ -234,28 +246,15 @@ void loadCharacter(Player& characterInfo)
     if (file.is_open())
     {
         string line;
-        while (getline (file, line))
+        while (getline(file, line))
         {
-            if (line.find("Imie:") != string::npos)
+            
+            if (line.rfind("Name: ", 0) == 0 || line.rfind("NAME: ", 0) == 0)
             {
                 characterInfo.characterName = line.substr(6);
             }
-            if (line.find("HP:") != string::npos)
-            {
-                string hpText = line.substr(4);
-                characterInfo.attributes.hp = stoi(hpText); 
-            }
-            if (line.find("Mana: ") != string::npos)
-            {
-                string manaText = line.substr(6);
-                characterInfo.attributes.mana = stoi(manaText);
-            }
-            if (line.find("Strength:") != string::npos)
-            {
-                string strengthText = line.substr(9);
-                characterInfo.attributes.strength = stoi(strengthText);
-            }
-            if (line.find("Klasa: ") != string::npos)
+            
+            else if (line.rfind("Class: ", 0) == 0 || line.rfind("CLASS: ", 0) == 0)
             {
                 string classText = line.substr(7);
 
@@ -264,12 +263,12 @@ void loadCharacter(Player& characterInfo)
                     if (classText == characterInfo.characterClass[i])
                     {
                         characterInfo.selectedClass = i + 1;
+                        break;
                     }
-                
                 }
             }
             
-            if (line.find("Rasa: ") != string::npos)
+            else if (line.rfind("Race: ", 0) == 0 || line.rfind("RACE: ", 0) == 0)
             {
                 string raceText = line.substr(6);
 
@@ -278,38 +277,45 @@ void loadCharacter(Player& characterInfo)
                     if (raceText == characterInfo.characterRace[i])
                     {
                         characterInfo.selectedRace = i + 1;
+                        break;
                     }
-                    
                 }
-                
             }
-
-            if (line == "Inventory")
+            
+            else if (line.rfind("HP: ", 0) == 0)
+            {
+                characterInfo.attributes.hp = stoi(line.substr(4)); 
+            }
+            else if (line.rfind("Mana: ", 0) == 0 || line.rfind("MANA: ", 0) == 0)
+            {
+                characterInfo.attributes.mana = stoi(line.substr(6));
+            }
+            else if (line.rfind("Strength: ", 0) == 0 || line.rfind("STRENGTH: ", 0) == 0)
+            {
+                characterInfo.attributes.strength = stoi(line.substr(10)); // 10 znaków dla "Strength: "
+            }
+            
+            else if (line == "Inventory" || line == "INVENTORY")
             {
                 characterInfo.inventory.clear();
                 readingInventory = true;
             }
-            
             else if (line == "=================")
             {
                 readingInventory = false;
             }
-            
-            else if (readingInventory)
+            else if (readingInventory && !line.empty())
             {
                 characterInfo.inventory.push_back(line);
             }
-            
         }
-
 
         file.close();
     }
     else 
     {
-        cout << "Nie udalo sie otworzyc pliku!";
+        cout << "Failed to load the file!" << endl;
     }
-
 }
 
 int mainMenu()
@@ -352,10 +358,17 @@ void removeItem(Player& characterInfo)
     displayInventory(characterInfo);
 
     int itemChoice;
-    cout << "Wybierz przedmiot ktory chcesz usunac: " << endl;
+    cout << "Choose the item you want to remove: " << endl;
     cin >> itemChoice;
 
+    while (itemChoice < 1 || itemChoice > characterInfo.inventory.size())
+    {
+        cout << "Invalid choice!" << endl;
+        cin >> itemChoice;
+    }
+
     characterInfo.inventory.erase(characterInfo.inventory.begin() + itemChoice - 1);
+    
 }
 
 void inventory(Player& characterInfo) 
@@ -388,7 +401,7 @@ void inventory(Player& characterInfo)
             break;
 
         default:
-            cout << "Nieprawidlowy wybor!" << endl; 
+            cout << "Invalid! Please enter a number from 1 to 3." << endl; 
             break;
         }
     }
@@ -423,11 +436,11 @@ int main() {
         }
             
         case 3:
-            cout << "Dowidzenia!";
+            cout << "Goodbye!";
             break;
     
         default:
-            cout << "Musisz cos wybrac!";
+            cout << "Invalid choice! Please try again.";
             break;
         }
     }
