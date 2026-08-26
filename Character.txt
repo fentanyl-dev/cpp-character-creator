@@ -6,8 +6,11 @@ Race: Dwarf
 HP: 80
 Mana: 110
 Strength: 25
+Level: 5
+Experience: 60
 Inventory
 Potion of Healing
 Sword
 Big Torch
+Potion of damage
 =================

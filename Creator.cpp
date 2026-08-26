@@ -27,6 +27,8 @@ class Player
                 int hp;
                 int mana;
                 int strength;
+                int level = 1;
+                int experience = 0;
         };
 
         CharacterAttributes attributes;
@@ -126,6 +128,8 @@ void saveCharacter (Player& characterInfo, int choiceOfClass, int choiceOfRace)
         file << "HP: " << characterInfo.attributes.hp << endl;
         file << "Mana: " << characterInfo.attributes.mana << endl;
         file << "Strength: " << characterInfo.attributes.strength << endl;
+        file << "Level: " << characterInfo.attributes.level << endl;
+        file << "Experience: " << characterInfo.attributes.experience << endl;
     
         file << "Inventory" << endl;
         
@@ -165,6 +169,8 @@ void displayCharacter(Player& characterInfo, int choiceOfClass, int choiceOfRace
     cout << "HP: " << characterInfo.attributes.hp << endl;
     cout << "MANA: " << characterInfo.attributes.mana << endl;
     cout << "STRENGTH: " << characterInfo.attributes.strength << endl;
+    cout << "LEVEL: " << characterInfo.attributes.level << endl;
+    cout << "EXPERIENCE: " << characterInfo.attributes.experience << endl;
     cout << "=================" << endl;
 }
 
@@ -294,6 +300,14 @@ void loadCharacter(Player& characterInfo)
             {
                 characterInfo.attributes.strength = stoi(line.substr(10)); // 10 znaków dla "Strength: "
             }
+            else if (line.rfind("Level: ", 0 ) == 0 || line.rfind("LEVEL: ", 0) == 0)
+            {
+                characterInfo.attributes.level = stoi(line.substr(7));
+            }
+            else if (line.rfind("Experience: ", 0) == 0 || line.rfind("EXPERIENCE: ", 0) == 0)
+            {
+                characterInfo.attributes.experience = stoi(line.substr(12));
+            }
             
             else if (line == "Inventory" || line == "INVENTORY")
             {
@@ -408,6 +422,23 @@ void inventory(Player& characterInfo)
     
 }
 
+void addExperience(Player& characterInfo, int amount)
+{
+    characterInfo.attributes.experience += amount;
+
+    while (characterInfo.attributes.experience >= 100)
+    {
+        cout << "+1 level!" << endl;
+        characterInfo.attributes.level++;
+
+        characterInfo.attributes.experience -= 100;
+
+    }
+    
+    cout << "Experience: " << characterInfo.attributes.experience << endl;
+    cout << "Level: " << characterInfo.attributes.level << endl;
+}
+
 int main() {
     
     int menuChoice = 0;
@@ -425,11 +456,21 @@ int main() {
         case 2:
         {
             Player loadedCharacter;
+
             loadCharacter(loadedCharacter);
+
             displayCharacter(loadedCharacter, 
                 loadedCharacter.selectedClass, 
                 loadedCharacter.selectedRace);
+
             displayInventory(loadedCharacter);
+
+            addExperience(loadedCharacter, 230);
+
+            saveCharacter(loadedCharacter,
+                loadedCharacter.selectedClass,
+                loadedCharacter.selectedRace);
+
             inventory(loadedCharacter);
 
             break;
