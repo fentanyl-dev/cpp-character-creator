@@ -6,8 +6,9 @@ Race: Dwarf
 HP: 80
 Mana: 110
 Strength: 25
-Level: 5
-Experience: 60
+Level: 13
+Experience: 180
+Next Level: 250
 Inventory
 Potion of Healing
 Sword
