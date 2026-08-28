@@ -42,6 +42,8 @@ class Player
 
 };
 
+
+
 // -----------
 // CHARACTER ATTRIBUTES
 // -----------
@@ -356,6 +358,8 @@ void inventory(Player& characterInfo)
 
     while (inventoryChoice != 3)
     {
+        displayInventory(characterInfo);
+        
         inventoryChoice = inventoryMenu();
 
         switch (inventoryChoice)
@@ -411,7 +415,7 @@ void addExperience(Player& characterInfo, int amount)
 // CHARACTER CREATOR
 // -----------------
 
-void createCharacter()
+Player createCharacter()
 {
     cout << "Welcome to the character creator!" << endl;
     cout << "Please choose a name for your character: ";
@@ -456,6 +460,8 @@ void createCharacter()
     //FILE
     
     saveCharacter(characterInfo, choiceOfClass, choiceOfRace);
+
+    return characterInfo;
 }
 
 // -------
@@ -480,6 +486,66 @@ int mainMenu()
 
 }
 
+int characterActionMenu()
+{
+    int choice;
+
+     cout << " ==================== " << endl;
+     cout << "    CHARACTER MENU " << endl;
+     cout << " ==================== " << endl;
+     cout << "1. Display Character" << endl;
+     cout << "2. Inventory " << endl;
+     cout << "3. Add Experience" << endl;
+     cout << "4. Save and Quit" << endl;
+     cout << "Choose: ";
+
+     cin >> choice;
+
+     return choice;
+}
+
+void gameLoop(Player& activePlayer)
+{
+    bool inGame = true;
+
+    while (inGame)
+    {
+        int action = characterActionMenu();
+        switch (action)
+        {
+        case 1:
+            displayCharacter(
+                activePlayer,
+                activePlayer.selectedClass,
+                activePlayer.selectedRace
+            );
+            break;
+        case 2:
+            inventory(activePlayer);
+            break;
+
+        case 3:
+            int experienceAmount;
+            cout << "How much experience you want to add: ";
+            cin >> experienceAmount;
+            addExperience(activePlayer, experienceAmount);
+            break;
+        case 4:
+            saveCharacter(
+                activePlayer,
+                activePlayer.selectedClass,
+                activePlayer.selectedRace
+            );
+            inGame = false;
+            break;
+        default:
+            cout << "Invalid choice!" << endl;
+            break;
+        }
+    }
+    
+}
+
 int main() {
     
     int menuChoice = 0;
@@ -491,32 +557,20 @@ int main() {
         switch (menuChoice)
         {
         case 1:
-            createCharacter();
+        {
+             Player newPlayer = createCharacter();
+            gameLoop(newPlayer);
+
             break;
-        
+        }
+           
         case 2:
         {
             Player loadedCharacter;
 
             loadCharacter(loadedCharacter);
 
-            displayCharacter(loadedCharacter, 
-                loadedCharacter.selectedClass, 
-                loadedCharacter.selectedRace);
-
-            displayInventory(loadedCharacter);
-
-            int experienceAmount;
-            cout << "How much experience you want to add: ";
-            cin >> experienceAmount;
-
-            addExperience(loadedCharacter, experienceAmount);
-
-            saveCharacter(loadedCharacter,
-                loadedCharacter.selectedClass,
-                loadedCharacter.selectedRace);
-
-            inventory(loadedCharacter);
+            gameLoop(loadedCharacter);
 
             break;
         }

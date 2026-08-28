@@ -1,17 +1,16 @@
 =================
 YOUR CHARACTER: 
-Name: ShowTime
-Class: Archer
-Race: Dwarf
-HP: 80
-Mana: 110
-Strength: 25
-Level: 13
-Experience: 180
-Next Level: 250
+Name: Pomni
+Class: Warrior
+Race: Elf
+HP: 120
+Mana: 40
+Strength: 85
+Level: 1
+Experience: 0
+Next Level: 100
 Inventory
+Potion of Strength
 Potion of Healing
 Sword
-Big Torch
-Potion of damage
 =================
