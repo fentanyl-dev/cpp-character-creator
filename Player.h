@@ -36,6 +36,10 @@ class Player
 
         std::vector<std::string> inventory = {"Potion of Strength", "Potion of Healing", "Sword"};
 
+        void addExperience(int amount);
+        void addItem();
+        void removeItem(int itemChoice);
+
 };
 
 // Attributes
@@ -67,7 +71,6 @@ void inventory(Player& characterInfo);
 
 // Experience
 
-void addExperience(Player& characterInfo, int amount);
 
 // Character Creator
 

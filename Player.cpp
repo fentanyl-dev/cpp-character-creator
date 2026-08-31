@@ -264,7 +264,7 @@ void displayInventory(Player& characterInfo)
 
 // addItems
 
-void addItem(Player& characterInfo)
+void Player::addItem()
 {
     string itemName;
     cout << "Enter the name of the item you want to add: " << endl;
@@ -272,26 +272,21 @@ void addItem(Player& characterInfo)
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, itemName);
 
-    characterInfo.inventory.push_back(itemName);
+    inventory.push_back(itemName);
 }
 
 // removeItem
 
-void removeItem(Player& characterInfo)
+void Player::removeItem(int itemChoice)
 {
-    displayInventory(characterInfo);
 
-    int itemChoice;
-    cout << "Choose the item you want to remove: " << endl;
-    cin >> itemChoice;
-
-    while (itemChoice < 1 || itemChoice > characterInfo.inventory.size())
+    while (itemChoice < 1 || itemChoice > inventory.size())
     {
         cout << "Invalid choice!" << endl;
         cin >> itemChoice;
     }
 
-    characterInfo.inventory.erase(characterInfo.inventory.begin() + itemChoice - 1);
+    inventory.erase(inventory.begin() + itemChoice - 1);
     
 }
 
@@ -327,7 +322,7 @@ void inventory(Player& characterInfo)
         switch (inventoryChoice)
         {
         case 1:
-            addItem(characterInfo);
+            characterInfo.addItem();
             saveCharacter(
                 characterInfo, 
                 characterInfo.selectedClass, 
@@ -336,7 +331,12 @@ void inventory(Player& characterInfo)
             break;
         
         case 2:
-            removeItem(characterInfo);
+            int itemChoice;
+            cout << "Choose the item you want to remove: ";
+            cin >> itemChoice;
+
+            characterInfo.removeItem(itemChoice);
+            
             saveCharacter(characterInfo, 
                 characterInfo.selectedClass, 
                 characterInfo.selectedRace);
@@ -355,20 +355,19 @@ void inventory(Player& characterInfo)
 
 // Experience
 
-void addExperience(Player& characterInfo, int amount)
+void Player::addExperience(int amount)
 {
-    characterInfo.attributes.experience += amount;
+    attributes.experience += amount;
 
-    while (characterInfo.attributes.experience >= characterInfo.attributes.experienceRequired)
+    while (attributes.experience >= attributes.experienceRequired)
     {
         cout << "+1 level!" << endl;
-        characterInfo.attributes.level++;
+        attributes.level++;
 
-        characterInfo.attributes.experience -= characterInfo.attributes.experienceRequired;
-        characterInfo.attributes.experienceRequired += 50;
+        attributes.experience -= attributes.experienceRequired;
+        attributes.experienceRequired += 50;
 
     }
-    
 }
 
 // createCharacter
@@ -486,7 +485,7 @@ void gameLoop(Player& activePlayer)
             int experienceAmount;
             cout << "How much experience you want to add: ";
             cin >> experienceAmount;
-            addExperience(activePlayer, experienceAmount);
+            activePlayer.addExperience(experienceAmount);
             break;
         case 4:
             saveCharacter(
