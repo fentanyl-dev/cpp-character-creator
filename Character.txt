@@ -1,11 +1,12 @@
 =================
 YOUR CHARACTER: 
-Name: Pomni
-Class: Warrior
-Race: Elf
-HP: 120
-Mana: 40
-Strength: 85
+Name: Fentanyl
+Class: Archer
+Race: Human
+HP: 60
+MAX HP: 60
+Mana: 130
+Strength: 65
 Level: 1
 Experience: 0
 Next Level: 100

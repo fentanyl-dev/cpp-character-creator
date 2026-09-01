@@ -6,81 +6,67 @@
 
 class Player
 {
+public:
+
+    std::string characterName;
+
+    std::string characterClass[3] =
+    {
+        "Archer",
+        "Mage",
+        "Warrior"
+    };
+
+    std::string characterRace[3] =
+    {
+        "Elf",
+        "Human",
+        "Dwarf"
+    };
+
+    int selectedClass = 0;
+    int selectedRace = 0;
+
+    class CharacterAttributes
+    {
     public:
-        std::string characterName;
-        std::string characterClass[3] = {
-            "Archer",
-            "Mage",
-            "Warrior"
-        };
-        std::string characterRace[3] = {
-            "Elf",
-            "Human",
-            "Dwarf"
-        };
 
-        int selectedClass = 0;
-        int selectedRace = 0;
+        int hp = 0;
+        int maxHP = 0;
 
-        class CharacterAttributes {
-            public:
-                int hp;
-                int mana;
-                int strength;
-                int level = 1;
-                int experience = 0;
-                int experienceRequired = 100;
-        };
+        int mana = 0;
+        int maxMANA = 0;
 
-        CharacterAttributes attributes;
+        int strength = 0;
 
-        std::vector<std::string> inventory = {"Potion of Strength", "Potion of Healing", "Sword"};
+        int level = 1;
+        int experience = 0;
+        int experienceRequired = 100;
+    };
 
-        void addExperience(int amount);
-        void addItem();
-        void removeItem(int itemChoice);
+    CharacterAttributes attributes;
 
+    std::vector<std::string> inventory =
+    {
+        "Potion of Strength",
+        "Potion of Healing",
+        "Sword"
+    };
+
+    // Experience
+    void addExperience(int amount);
+
+    // Inventory
+    void addItem();
+    void removeItem(int itemChoice);
+
+    // Combat
+    void takeDamage(int amount);
+    void heal(int amount);
+    void restoreMana(int amount);
+    void useMana(int amount);
+
+    bool checkDeath();
 };
-
-// Attributes
-
-void setClassAttributes (Player& characterInfo, int choiceOfClass);
-void setRaceAttributes (Player& characterInfo, int choiceOfRace); 
-
-// Choices
-
-int chooseClass();
-int chooseRace();
-
-// SAVE / LOAD
-
-void saveCharacter (Player& characterInfo, int choiceOfClass, int choiceOfRace);
-void loadCharacter(Player& characterInfo);
-
-// Display
-
-void displayCharacter(Player& characterInfo, int choiceOfClass, int choiceOfRace);
-void displayInventory(Player& characterInfo);
-
-// Inventory
-
-void addItem(Player& characterInfo);
-void removeItem(Player& characterInfo);
-int inventoryMenu();
-void inventory(Player& characterInfo);
-
-// Experience
-
-
-// Character Creator
-
-Player createCharacter();
-
-// menus // gameLoop
-
-int mainMenu();
-int characterActionMenu();
-void gameLoop(Player& activePlayer);
-
 
 #endif
