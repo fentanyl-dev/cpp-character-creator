@@ -1,5 +1,6 @@
 #include "game.h"
 #include "characterCreator.h"
+#include "enemy.h"
 
 #include <iostream>
 #include <limits>
@@ -24,7 +25,8 @@ int characterActionMenu()
     cout << "4. Take Damage" << endl;
     cout << "5. Heal" << endl;
     cout << "6. Restore Mana" << endl;
-    cout << "7. Save and Quit" << endl;
+    cout << "7. Fight" << endl;
+    cout << "8. Save and Quit" << endl;
     cout << "Choose: ";
 
     cin >> choice;
@@ -136,6 +138,67 @@ void inventory(Player& characterInfo)
     }
 }
 
+void combat(Player& player, Enemy& enemy)
+{
+    bool inFight = true;
+
+    while (inFight)
+    {
+        cout << "====================" << endl;
+        cout << "      COMBAT" << endl;
+        cout << "====================" << endl;
+
+        cout << "Enemy HP: " << enemy.hp << "/" << enemy.maxHP << endl;
+        cout << "Your HP: " << player.attributes.hp << "/" << player.attributes.maxHP << endl;
+        
+        int combatChoice;
+
+        cout << "1.Attack" << endl;
+        cout << "2.Run" << endl;
+        cout << "Choose: ";
+        cin >> combatChoice;
+
+        switch (combatChoice)
+        {
+        case 1:
+            player.attack(enemy);
+
+            cout << "You attacked a enemy! " << endl;
+            cout << "Enemy HP: " << enemy.hp << "/" << enemy.maxHP << endl;
+
+            if (enemy.checkDeath())
+            {
+                cout << "Your enemy is dead! You won!" << endl;
+                inFight = false;
+            }
+            else
+            {
+                enemy.attack(player);
+                cout << "Enemy attacked you!" << endl;
+                cout << "Your HP: " << player.attributes.hp << "/" << player.attributes.maxHP << endl;
+
+                if (player.checkDeath())
+                {
+                    cout << "You're dead!" << endl;
+                    inFight = false;
+                }
+                
+            }
+            break;  
+        case 2:
+            cout << "You ran away!" << endl;
+            inFight = false;
+            break;
+        
+        default:
+            cout << "Invalid choice!" << endl;
+            break;
+        }
+    }
+    
+}
+
+
 
 // ====================
 // GAME LOOP
@@ -149,10 +212,14 @@ void gameLoop(Player& activePlayer)
     cout << "====================" << endl;
     cout << "     GAME START" << endl;
     cout << "====================" << endl;
-    cout << "Welcome, "
-         << activePlayer.characterName
-         << "!" << endl;
+    cout << "Welcome, " << activePlayer.characterName << "!" << endl;
     cout << endl;
+
+    Enemy goblin;
+    goblin.hp = 300;
+    goblin.maxHP = 300;
+    goblin.strength = 10;
+
 
     while (inGame)
     {
@@ -204,11 +271,7 @@ void gameLoop(Player& activePlayer)
 
                 activePlayer.takeDamage(amount);
 
-                cout << "HP: "
-                     << activePlayer.attributes.hp
-                     << "/"
-                     << activePlayer.attributes.maxHP
-                     << endl;
+                cout << "HP: " << activePlayer.attributes.hp << "/" << activePlayer.attributes.maxHP << endl;
 
                 if (activePlayer.checkDeath())
                 {
@@ -234,11 +297,7 @@ void gameLoop(Player& activePlayer)
 
                 activePlayer.heal(amount);
 
-                cout << "HP: "
-                     << activePlayer.attributes.hp
-                     << "/"
-                     << activePlayer.attributes.maxHP
-                     << endl;
+                cout << "HP: " << activePlayer.attributes.hp << "/" << activePlayer.attributes.maxHP << endl;
 
                 saveCharacter(activePlayer);
 
@@ -256,20 +315,19 @@ void gameLoop(Player& activePlayer)
 
                 activePlayer.restoreMana(amount);
 
-                cout << "Mana: "
-                     << activePlayer.attributes.mana
-                     << "/"
-                     << activePlayer.attributes.maxMANA
-                     << endl;
+                cout << "Mana: " << activePlayer.attributes.mana << "/" << activePlayer.attributes.maxMANA << endl;
 
                 saveCharacter(activePlayer);
 
                 break;
             }
+            case 7:
+                combat(activePlayer, goblin);
 
+                break;
 
             // SAVE AND QUIT
-            case 7:
+            case 8:
 
                 saveCharacter(activePlayer);
 

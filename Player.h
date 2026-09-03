@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+class Enemy;
+
 class Player
 {
 public:
@@ -67,6 +69,8 @@ public:
     void useMana(int amount);
 
     bool checkDeath();
+
+    void attack(Enemy& enemy);
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "enemy.h"
 
 #include <iostream>
 #include <limits>
@@ -119,4 +120,9 @@ void Player::useMana(int amount)
 bool Player::checkDeath()
 {
     return attributes.hp <= 0;
+}
+
+void Player::attack(Enemy& enemy)
+{
+    enemy.takeDamage(attributes.strength);
 }
